@@ -26,7 +26,7 @@ class Game(db.Model,SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    reviews = db.relationship("Review", back_populates="game")
+    reviews = db.relationship("Review", back_populates="game",cascade = "all,delete-orphan")
     users = association_proxy("reviews", "user", creator=lambda user_obj:Review(user = user_obj))
 
     def __repr__(self):
@@ -65,7 +65,7 @@ class User(db.Model,SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    reviews = db.relationship("Review", back_populates="user")
+    reviews = db.relationship("Review", back_populates="user", cascade = "all,delete-orphan")
     games = association_proxy("reviews", "game", creator=lambda game_obj:Review(game = game_obj))
 
     def __repr__(self):
